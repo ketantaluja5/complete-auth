@@ -24,7 +24,9 @@ const signup = async (req, res) => {
     }
     const userAlreadyExists = await User.findOne({ email });
     if (userAlreadyExists) {
-      return res.status(400).json({ success: false, message: error.message });
+      return res
+        .status(400)
+        .json({ success: false, message: "User already exists" });
     }
     const hashedPassword = await bcryptjs.hash(password, 12);
     const verificationToken = generateVerificationToken();
@@ -65,7 +67,7 @@ const verifyEmail = async (req, res) => {
       verificationTokenExpiresAt: { $gt: Date.now() },
     });
     if (!user) {
-      return res.statuse(400).json({
+      return res.status(400).json({
         success: false,
         message: "Invalid or expired verification code",
       });
